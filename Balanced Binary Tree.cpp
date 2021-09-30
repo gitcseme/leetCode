@@ -28,11 +28,13 @@ public:
     int traverseTree(TreeNode* node, bool &result) {
         if (node == nullptr)
             return 0;
-
-        int l_height = traverseTree(node->left, result);
-        int r_height = traverseTree(node->right, result);
-        if (abs(l_height - r_height) > 1)
-            result = false;
+        int l_height = 0, r_height = 0;
+        if (result) {
+            l_height = traverseTree(node->left, result);
+            r_height = traverseTree(node->right, result);
+            if (abs(l_height - r_height) > 1)
+                result = false;
+        }
 
         return 1 + max(l_height, r_height);
     }
