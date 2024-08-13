@@ -1,21 +1,27 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        if (head == NULL) {
-            return false;
-        }
-        
-        ListNode* tortoise = head->next;
-        ListNode* hear = head;
-        
-        while (tortoise != NULL && tortoise->next != NULL && hear != NULL) {
-            if (hear == tortoise)
+        auto slow = head;
+        auto fast = head;
+
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow -> next;
+            fast = fast->next->next;
+
+            if (slow == fast) {
                 return true;
-            
-            tortoise = tortoise->next->next;
-            hear = hear->next;
+            }
         }
-        
+
         return false;
+        
+        // Finding cycle starting point
+        // slow = head;
+        // while (slow != fast) {
+        //     slow = slow->next;
+        //     fast = fast->next;
+        // }
+
+        // cout << slow->val << "\n";
     }
 };
