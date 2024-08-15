@@ -1,4 +1,5 @@
-
+/*
+// Definition for a Node.
 class Node {
 public:
     int val;
@@ -13,43 +14,77 @@ public:
     Node(int _val, Node* _left, Node* _right, Node* _next)
         : val(_val), left(_left), right(_right), next(_next) {}
 };
+*/
 
+// Best solution
 class Solution {
 public:
     Node* connect(Node* root) {
-        if (root != NULL)
-            bfs(root);
+        if (root == nullptr)
+            return root;
+
+        queue<Node*> Q;
+        Q.push(root);
+
+        while (!Q.empty()) {
+            int levelLength = Q.size();
+            
+            for (int i = 0; i < levelLength; ++i) {
+                auto u = Q.front();
+                Q.pop();
+
+                if (i+1 < levelLength) u -> next = Q.front();
+                
+                if (u -> left != nullptr)  Q.push(u -> left);
+                if (u -> right != nullptr)  Q.push(u -> right);
+            }
+        }
+
+        return root;
+    }
+};
+
+// Custom thought
+class Solution {
+public:
+    Node* connect(Node* root) {
+        bfs(root);
         return root;
     }
 
-    void bfs(Node* root) {
+    void bfs(Node * root) {
+        if (root == nullptr)
+            return;
+
         queue<Node*> q;
         q.push(root);
 
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             int levelLength = q.size();
+            Node* prev = nullptr;
 
-            Node *prev, *left, *right;
             for (int i = 0; i < levelLength; ++i) {
-                Node* curr = q.front();
+                auto u = q.front();
                 q.pop();
-                if (curr->left != NULL) {
-                    left = curr->left;
-                    right = curr->right;
-                    q.push(left);
-                    q.push(right);
+                
+                if (u -> left == nullptr && u -> right == nullptr) { // leaf node
+                    if (prev != nullptr) {
+                        prev -> next = u;
+                    }
+                    prev = u;
+                    continue;
+                }
 
-                    left->next = right;
-                    if (i != 0)
-                        prev->next = left;
+                q.push(u -> left);
+                q.push(u -> right);
+                u -> left -> next = u -> right;
+                
+                if (prev != nullptr) {
+                    prev -> next = u -> left;
+                }
 
-                    prev = right;
-                }                
+                prev = u -> right;
             }
         }
     }
 };
-
-// LEET CODE
-static const int _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); return 0; }();
