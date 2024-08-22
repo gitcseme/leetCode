@@ -12,5 +12,24 @@ public:
     }
 };
 
-// LEET CODE
-static const int _ = []() { ios::sync_with_stdio(false); cin.tie(NULL); return 0; }();
+
+class Solution {
+public:
+    long long calculateHash(string& str) {
+        long long H = 1;
+        static long long BASE = 789;
+        static long long MOD = 1000000000 + 7;
+
+        for (char& c : str) {
+            H = (H * (BASE + c)) % MOD;
+        }
+
+        return H;
+    }
+
+    bool isAnagram(string s, string t) {
+        auto h1 = calculateHash(s);
+        auto h2 = calculateHash(t);
+        return h1 == h2;
+    }
+};
