@@ -1,25 +1,20 @@
 class Solution {
 public:
-    int elem = -1;
-    bool found = false;
+    int kthElem = -1;
 
     void dfs(TreeNode* root, int& k) {
-        if (root == nullptr || found) return;
+        if (root == nullptr) return;
 
         dfs(root->left,  k);
         
         --k;
-        if (!found && k == 0) {
-            elem = root->val;
-            found = true;
-            return;
-        }
-
+        if (k == 0) kthElem = root->val;
+        
         dfs(root->right, k);
     }
 
     int kthSmallest(TreeNode* root, int k) {
         dfs(root, k);
-        return elem;
+        return kthElem;
     }
 };
